@@ -73,23 +73,23 @@ bool CRKLog::Write(string text)
 	struct tm timeNow;
 	char szDateTime[100];
 	string  strName;
-	FILE *file=NULL;
+	//FILE *file=NULL;
 	time(&now);
 	localtime_r(&now, &timeNow);
 	sprintf(szDateTime, "%04d-%02d-%02d.txt", timeNow.tm_year + 1900, timeNow.tm_mon + 1, timeNow.tm_mday);
 	strName = m_path + m_name+szDateTime;
 
 	try {
-		file = fopen(strName.c_str(), "ab+");
-		if (!file) {
-			return false;
-		}
+		// file = fopen(strName.c_str(), "ab+");
+		// if (!file) {
+		// 	return false;
+		// }
 		sprintf(szDateTime, "%02d:%02d:%02d \t", timeNow.tm_hour, timeNow.tm_min, timeNow.tm_sec);
 		text = szDateTime + text + "\r\n";
-		fwrite(text.c_str(), 1, text.size() * sizeof(char), file);
-		fclose(file);
+		fwrite(text.c_str(), 1, text.size() * sizeof(char), stderr);
+		//fclose(file);
 	} catch (...) {
-		fclose(file);
+		//fclose(file);
 		return false;
 	}
 	return true;

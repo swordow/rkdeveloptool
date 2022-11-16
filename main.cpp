@@ -1767,7 +1767,6 @@ bool download_boot(STRUCT_RKDEVICE_DESC &dev, char *szLoader)
 	CRKBoot *pBoot = NULL;
 	bool bRet, bSuccess = false;
 	int iRet;
-
 	pImage = new CRKImage(szLoader, bRet);
 	if (!bRet){
 		ERROR_COLOR_ATTR;
@@ -3295,6 +3294,7 @@ bool handle_command(int argc, char* argv[], CRKScan *pScan)
 
 int main(int argc, char* argv[])
 {
+	printf("rkdeveloptool running...!\n");
 	CRKScan *pScan = NULL;
 	int ret;
 	char szProgramProcPath[100];
@@ -3316,6 +3316,7 @@ int main(int argc, char* argv[])
 	strLogDir +=  "/log/";
 	strConfigFile = szProgramDir;
 	strConfigFile += "/config.ini";
+	printf("Log Dir is %s\n", strLogDir.c_str());
 	if (opendir(strLogDir.c_str()) == NULL)
 		mkdir(strLogDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH);
 	g_pLogObject = new CRKLog(strLogDir.c_str(), "log",true);
