@@ -44,6 +44,7 @@ bool CRKUsbComm::InitializeUsb(STRUCT_RKDEVICE_DESC devDesc)
 		}
 		return false;
 	}
+	m_log->Record("InitializeUsb-->open device ok!");
 	struct libusb_config_descriptor *pConfigDesc=NULL;
 	iRet = libusb_get_active_config_descriptor((libusb_device *)devDesc.pUsbHandle, &pConfigDesc);
 	if (iRet!=0) {
@@ -52,6 +53,7 @@ bool CRKUsbComm::InitializeUsb(STRUCT_RKDEVICE_DESC devDesc)
 		}
 		return false;
 	}
+	m_log->Record("InitializeUsb-->get device config descriptor ok!");
 	int i, j, k;
 	const struct libusb_interface *pInterface;
 	const struct libusb_endpoint_descriptor *pEndpointDesc;
@@ -145,12 +147,13 @@ bool CRKUsbComm::RKU_Read(BYTE* lpBuffer, DWORD dwSize)
 
 bool CRKUsbComm::RKU_Write(BYTE* lpBuffer, DWORD dwSize)
 {
+	m_log->Record("setup %s %d RKU_Write writing %d bytes!", __FILE__, __LINE__, dwSize);
 	int  iRet;
 	int nWrite;
 	iRet = libusb_bulk_transfer((libusb_device_handle *)m_pUsbHandle, m_pipeBulkOut, lpBuffer, dwSize, &nWrite, CMD_TIMEOUT);
 	if (iRet != 0) {
 	    if (m_log) {
-	        m_log->Record("Error:RKU_Write failed, err=%d", iRet);
+	        m_log->Record("Error:RKU_Write failed, err=%d %s", iRet, libusb_strerror((libusb_error)iRet));
 	    }
 	    return false;
 	}
